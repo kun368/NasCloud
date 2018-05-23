@@ -24,7 +24,7 @@ export default class PlatformIntro2 extends Component {
       >
         <div style={styles.body}>
           <h1 style={styles.title}>
-            <Icon type="similar-product" size="xl"/>&nbsp;星云盘
+            <Icon type="similar-product" size="xxl"/>&nbsp; 星 云 盘
           </h1>
           <p style={styles.text}>
             专注小文件保存<br />
@@ -47,7 +47,7 @@ const styles = {
     textAlign: 'center',
   },
   title: {
-    fontSize: 34,
+    fontSize: 40,
     color: '#000',
     marginBottom: 20,
     marginTop: 150,
