@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  nas-cloud-dapp-server:
+    image: kun368/nas-cloud:master
+    restart: always
+    ports:
+      - "8103:80"

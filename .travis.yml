@@ -1,0 +1,21 @@
+language:
+  - node_js
+node_js:
+  - "8"
+sudo: required
+
+services:
+  - docker
+
+install:
+#  - npm config set registry https://registry.npm.taobao.org
+  - npm cache clean --force
+  - npm install
+
+script:
+  - npm run build
+  - docker build -t kun368/nas-cloud:$TRAVIS_BRANCH .
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push kun368/nas-cloud:$TRAVIS_BRANCH
