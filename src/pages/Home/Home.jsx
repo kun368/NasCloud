@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import GeneralWidget from "./components/GeneralWidget/GeneralWidget";
+import PlatformToolsIntro from "./components/PlatformToolsIntro/PlatformToolsIntro";
 
 export default class Home extends Component {
   static displayName = 'Home';
@@ -9,6 +11,11 @@ export default class Home extends Component {
   }
 
   render() {
-    return <div className="home-page" />;
+    return (
+      <div className="home-page">
+        <PlatformToolsIntro/>
+        <GeneralWidget/>
+      </div>
+    );
   }
 }

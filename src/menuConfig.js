@@ -10,7 +10,7 @@ const headerMenuConfig = [
   },
   {
     name: '反馈',
-    path: 'https://github.com/kun368/NasDianPing/issues/new',
+    path: 'https://github.com/kun368/NasCloud/issues/new',
     external: true,
     newWindow: true,
     icon: 'message',
