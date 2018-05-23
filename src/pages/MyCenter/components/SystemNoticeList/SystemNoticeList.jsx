@@ -37,7 +37,7 @@ export default class SystemNoticeList extends Component {
     }
     else {
       if (!NebUtils.checkInstalledPlugin()) {
-        Toast.error('还未安装Chrome扩展，无法查询您的点评信息，请点击页面上方的下载按钮！');
+        Toast.error('还未安装Chrome扩展，无法查询您的网盘文件，请点击页面上方的下载按钮！');
       }
       NebUtils.getPluginUserAddress(addr => {
         NebUtils.userCallAxios(
