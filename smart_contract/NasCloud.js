@@ -74,7 +74,7 @@ NasCloud.prototype = {
   queryFile: function (txHash) {
     let ret = this.hashMap.get(txHash);
     if (!ret) {
-      return new Error("not exits");
+      throw new Error("not exits");
     }
     return ret;
   }

@@ -44,7 +44,7 @@ const asideMenuConfig = [
   },
   {
     name: '我的云盘',
-    path: '/MyCenter',
+    path: '/MyCenter/0',
     icon: 'yonghu',
   },
 ];

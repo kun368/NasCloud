@@ -1,59 +1,110 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Pagination } from '@icedesign/base';
+import { Pagination, Feedback, Button } from '@icedesign/base';
+import NebUtils from '../../../../util/NebUtils.js'
+import {Base64} from 'js-base64';
+import {withRouter} from "react-router-dom";
 
-const dataSource = [
-  {
-    title: '关于淘宝网存储设备商品发布规范的公告',
-    tag: 'up',
-    href: '',
-    time: '2017-11-29',
-  },
-  {
-    title: '加强淘宝网电动四轮车类目准入的公告',
-    tag: 'new',
-    href: '',
-    time: '2017-10-29',
-  },
-  {
-    title: '淘宝网VR头盔商品发布规范的公告',
-    tag: 'hot',
-    href: '',
-    time: '2017-03-11',
-  },
-  {
-    title: '加强淘宝网农药类目准入的公告',
-    tag: '',
-    href: '',
-    time: '2017-02-16',
-  },
-  {
-    title: '淘宝网2017年春节发货时间及交易超时调整公告',
-    tag: '',
-    href: '',
-    time: '2017-11-23',
-  },
-];
 
-const dict = {
-  up: '置顶',
-  hot: '新',
-  new: '热',
-};
+const Toast = Feedback.toast;
 
+@withRouter
 export default class SystemNoticeList extends Component {
   static displayName = 'SystemNoticeList';
 
   constructor(props) {
     super(props);
     this.state = {
-      current: 2,
+      pageTitle: '加载中，请稍候...',
+      dataSource: [],
     };
   }
 
-  handleChange = (current) => {
-    console.log('current:', current);
-    this.setState({ current });
+  componentDidMount() {
+    const {txHash} = this.props.match.params;
+    if (txHash && txHash.length > 10) {
+      NebUtils.userCallAxios(
+        "queryFile",
+        `["${txHash}"]`,
+        resp => {
+          console.log(resp);
+          this.setState({
+            pageTitle: `查看/下载星云盘文件`,
+            dataSource: [resp],
+          })
+        },
+      );
+    }
+    else {
+      if (!NebUtils.checkInstalledPlugin()) {
+        Toast.error('还未安装Chrome扩展，无法查询您的点评信息，请点击页面上方的下载按钮！');
+      }
+      NebUtils.getPluginUserAddress(addr => {
+        NebUtils.userCallAxios(
+          "queryMyFile",
+          `["${addr}"]`,
+          resp => {
+            this.setState({
+              dataSource: resp.reverse(),
+              pageTitle: "我的星云盘文件",
+            });
+          },
+        );
+      })
+    }
+  }
+
+  onDownFileClick(item) {
+    console.log('download', item);
+    const fileName = Base64.decode(item.fileName);
+
+    const link = document.createElement('a');
+    link.download = fileName;
+    link.href = item.fileContnet;
+    link.appendChild(document.createTextNode("Download Excel"));
+    link.click();
+  }
+
+
+  renderItem = (item, idx) => {
+    const url = "http://" + window.location.host + "/#/MyCenter/" + item.txHash;
+
+    return (
+      <div style={styles.item} key={idx}>
+        <ul>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>文件名：</div>
+            <div style={styles.detailBody}>{Base64.decode(item.fileName)}</div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>上传者：</div>
+            <div style={styles.detailBody}>{item.from}</div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>上传时间：</div>
+            <div style={styles.detailBody}>{new Date(item.time).toLocaleString()}</div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>分享链接：</div>
+            <div style={styles.detailBody}>
+              <a href={url} target="_blank">{url}</a>
+            </div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>下载：</div>
+            <div style={styles.detailBody}>
+              <Button
+                type="normal"
+                size="small"
+                onClick={this.onDownFileClick.bind(this, item)}
+              >
+                点击下载
+              </Button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    );
   };
 
   render() {
@@ -61,33 +112,13 @@ export default class SystemNoticeList extends Component {
       <div className="system-notice-list">
         <IceContainer>
           <div className="notice-list-content">
-            <h2 style={styles.title}>系统公告</h2>
-            <ul style={styles.noticeList}>
-              {dataSource.map((item, index) => {
-                return (
-                  <li key={index} style={styles.noticeItem}>
-                    <a href={item.href} style={styles.noticeTitle}>
-                      {item.title}
-                    </a>
-                    {item.tag && (
-                      <span
-                        style={{ ...styles.noticeTag, ...styles[item.tag] }}
-                      >
-                        {dict[item.tag]}
-                      </span>
-                    )}
-                    <span style={styles.noticeTime}>{item.time}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <div style={styles.paginationWrap}>
-            <Pagination
-              shape="arrow-only"
-              current={this.state.current}
-              onChange={this.handleChange}
-            />
+            <h2 style={styles.title}>{this.state.pageTitle}</h2>
+            <div style={styles.noticeList}>
+              {this.state.dataSource.length === 0 ? '暂无数据' :
+                this.state.dataSource.map((item, idx) => {
+                  return this.renderItem(item, idx)
+                })}
+            </div>
           </div>
         </IceContainer>
       </div>
@@ -104,45 +135,29 @@ const styles = {
     margin: 0,
     padding: 0,
   },
-  noticeItem: {
-    position: 'relative',
-    padding: '12px 0',
-    paddingRight: '65px',
-    listStyle: 'none',
-    borderBottom: '1px solid #F4F4F4',
-  },
-  noticeTitle: {
-    fontSize: '14px',
-    color: '#666',
-    textDecoration: 'none',
-  },
-  noticeTag: {
-    fontSize: '12px',
-    padding: '2px 6px',
-    borderRadius: '8px',
-    marginLeft: '5px',
-  },
-  noticeTime: {
-    position: 'absolute',
-    right: '0px',
-    top: '15px',
-    fontSize: '12px',
-    color: '#999',
-  },
   paginationWrap: {
     marginTop: '20px',
     textAlign: 'right',
   },
-  up: {
-    color: '#4296ff',
-    background: '#eff6ff',
+  item: {
+    borderBottom: '3px solid #E5E5E5',
+    padding: '15px 0',
   },
-  new: {
-    color: '#fca61c',
-    background: '#fff4e2',
+  detailItem: {
+    padding: '8px 0px',
+    display: 'flex',
+    borderTop: '1px solid #EEEFF3',
   },
-  hot: {
-    color: '#f86d6d',
-    background: '#ffe8e8',
+  detailTitle: {
+    marginRight: '30px',
+    textAlign: 'right',
+    width: '120px',
+    color: '#999999',
+  },
+  detailBody: {
+    flex: 1,
+  },
+  statusProcessing: {
+    color: '#64D874',
   },
 };

@@ -53,18 +53,22 @@ export default class SettingsForm extends Component {
 
   handleFiles = files => {
     console.log(files);
+    const size = files.fileList[0].size;
     this.setState({
       fileName: files.fileList[0].name,
       fileBase64: files.base64,
-      prompt: `已选择文件：${files.fileList[0].name} （大小：${files.fileList[0].size}B）`
-    })
+      prompt: `已选择文件：${files.fileList[0].name} （大小：${size}B）`
+    });
+    if (size > 1024 * 24) {
+      Toast.help(`警告：您的文件大小为${size}B，文件过大将很有可能无法上链完成交易！`);
+    }
   };
 
   renderSuccPrompt() {
     if (this.state.succTxHash === '') {
       return;
     }
-    const url = "http://" + window.location.host + "/#/See/" + this.state.succTxHash;
+    const url = "http://" + window.location.host + "/#/MyCenter/" + this.state.succTxHash;
     return (
       <div style={{paddingBottom: '15px'}}>
         <Notice

@@ -20,7 +20,7 @@ const routerConfig = [
     component: Upload,
   },
   {
-    path: '/MyCenter',
+    path: '/MyCenter/:txHash',
     layout: HeaderAsideFooterLayout,
     component: MyCenter,
   },
