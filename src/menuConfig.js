@@ -29,6 +29,13 @@ const headerMenuConfig = [
     newWindow: true,
     icon: 'key',
   },
+  {
+    name: '下载手机版NAS钱包',
+    path: 'https://nano.nebulas.io/index_cn.html',
+    external: true,
+    newWindow: true,
+    icon: 'phone',
+  },
 ];
 
 const asideMenuConfig = [
@@ -46,6 +53,11 @@ const asideMenuConfig = [
     name: '我的云盘',
     path: '/MyCenter/0',
     icon: 'yonghu',
+  },
+  {
+    name: '使用帮助',
+    path: '/Help',
+    icon: 'location',
   },
 ];
 

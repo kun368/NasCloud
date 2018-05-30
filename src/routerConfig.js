@@ -6,6 +6,7 @@ import HeaderAsideFooterLayout from './layouts/HeaderAsideFooterLayout';
 import Home from './pages/Home';
 import Upload from './pages/Upload';
 import MyCenter from './pages/MyCenter';
+import Help from './pages/Help';
 import NotFound from './pages/NotFound';
 
 const routerConfig = [
@@ -23,6 +24,11 @@ const routerConfig = [
     path: '/MyCenter/:txHash',
     layout: HeaderAsideFooterLayout,
     component: MyCenter,
+  },
+  {
+    path: '/Help',
+    layout: HeaderAsideFooterLayout,
+    component: Help,
   },
   {
     path: '*',

@@ -31,6 +31,8 @@ export default class SettingsForm extends Component {
 
   handleSubmit() {
     const remark = this.field.getValues().remark;
+    console.log(remark);
+
     if (this.state.fileBase64 === '' || this.state.fileName === '') {
       Toast.error("请先上传文件！");
       return;
@@ -40,15 +42,21 @@ export default class SettingsForm extends Component {
     }
     const contract = {
       function: 'upload',
-      args: `["${Base64.encode(this.state.fileName)}", 
-                "${this.state.fileBase64}", "${Base64.encode(remark)}"]`,
+      args: `["${Base64.encode(this.state.fileName)}", "${this.state.fileBase64}", "${Base64.encode(remark)}"]`,
     };
-    NebUtils.pluginCall(contract.function, contract.args, (txHash) => {
-      // Toast.success("已提交交易，交易成功即上传星云盘成功！");
+    NebUtils.nebPayCall(contract.function, contract.args, true, (txHash) => {
+      Toast.success("已提交交易，交易成功即上传星云盘成功！");
       this.setState({
         succTxHash: txHash,
       })
     });
+
+    // NebUtils.pluginCall(contract.function, contract.args, (txHash) => {
+    //   // Toast.success("已提交交易，交易成功即上传星云盘成功！");
+    //   this.setState({
+    //     succTxHash: txHash,
+    //   })
+    // });
   }
 
   handleFiles = files => {

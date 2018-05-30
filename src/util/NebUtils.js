@@ -66,6 +66,28 @@ export default class NebUtils {
   };
 
   /**
+   * nebPay执行合约
+   */
+  static nebPayCall = (func, args, showQrCode, sucCallback, errCallback) => {
+    nebPay.call(dappAddress, '0', func, args, {
+      qrcode: {
+        showQRCode: showQrCode,
+      },
+      listener: (resp) => {
+        if (resp.execute_err !== "") {
+          console.log('error!', resp);
+          if (errCallback) {
+            errCallback(resp.execute_err);
+          }
+          return;
+        }
+        const result = JSON.parse(resp.result);
+        sucCallback(result);
+      },
+    });
+  };
+
+  /**
    * 获取插件中已登录的用户地址
    */
   static getPluginUserAddress = (callback) => {

@@ -67,6 +67,8 @@ export default class SystemNoticeList extends Component {
 
 
   renderItem = (item, idx) => {
+    console.log(item);
+
     const url = "http://" + window.location.host + "/#/MyCenter/" + item.txHash;
 
     return (
@@ -89,6 +91,10 @@ export default class SystemNoticeList extends Component {
             <div style={styles.detailBody}>
               <a href={url} target="_blank">{url}</a>
             </div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>备注：</div>
+            <div style={styles.detailBody}>{Base64.decode(item.fileRemark)}</div>
           </li>
           <li style={styles.detailItem}>
             <div style={styles.detailTitle}>下载：</div>
