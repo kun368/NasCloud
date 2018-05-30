@@ -50,13 +50,6 @@ export default class SettingsForm extends Component {
         succTxHash: txHash,
       })
     });
-
-    // NebUtils.pluginCall(contract.function, contract.args, (txHash) => {
-    //   // Toast.success("已提交交易，交易成功即上传星云盘成功！");
-    //   this.setState({
-    //     succTxHash: txHash,
-    //   })
-    // });
   }
 
   handleFiles = files => {

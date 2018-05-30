@@ -100,10 +100,6 @@ export default class TermsInfo extends Component {
             <img style={styles.myAutoImgPhone} src="http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-5-30/97014788.jpg" />
           </p>
           <p style={styles.desc}>
-            第五步，交易后提示发起交易成功<br/>
-            <img style={styles.myAutoImgPhone} src="http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-5-30/97014788.jpg" />
-          </p>
-          <p style={styles.desc}>
             第六步，可以打开“我的云盘”标签，管理自己已经上传的文件：
             <a href="http://10.0.75.1:4444/#/MyCenter/0" target="_blank">
               http://10.0.75.1:4444/#/MyCenter/0
