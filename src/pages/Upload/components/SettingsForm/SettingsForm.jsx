@@ -38,7 +38,7 @@ export default class SettingsForm extends Component {
       return;
     }
     if (!NebUtils.checkInstalledPlugin()) {
-      Toast.error('还未安装Chrome扩展，请点击页面上方的下载按钮');
+      Toast.error('您没有安装Chrome扩展，请使用手机钱包扫码交易，或者点击页面上方的下载按钮使用插件支付');
     }
     const contract = {
       function: 'upload',
