@@ -135,6 +135,7 @@ const styles = {
     margin: 0,
     paddingBottom: '20px',
     fontSize: '20px',
+    fontWeight: 900,
     borderBottom: '1px solid #dedede',
   },
   content: {
@@ -148,7 +149,7 @@ const styles = {
   },
 
   importantText: {
-    color: '#6633ff',
+    color: '#660066',
     fontWeight: 900,
   },
   myAutoImg: {
